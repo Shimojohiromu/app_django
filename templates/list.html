@@ -6,11 +6,17 @@
 {% endblock customcss %}
 
 {% block content %}
-<div class="container mt-3">
+<div class="container " style="width:40rem;">
     {% for item in object_list %}
     <div class="alert alert-success" role="alert">
         <p>タイトル：<a href="{% url 'detail' item.pk %}">{{item.title}}</a></p>
         <p>投稿者：{{item.user.username}}</p>    
+        <div class="w-30">
+            {% if item.image %}
+            <img  class="" src="{{ item.image.url }}" width="200"  alt="post_image">
+        
+            {% endif %}
+        </div>
 
         {% if request.user in item.like.all %}
         <a href="{% url 'like-home' item.pk %}" class="like-btn add-color" tabindex="-1" role="button" aria-disabled="true"><i class="fas fa-heart"></i></a>{{item.like.count}}

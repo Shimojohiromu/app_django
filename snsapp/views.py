@@ -16,9 +16,6 @@ class Home(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'list.html'
 
-    def get_queryset(self):
-        """リクエストユーザーのみ除外"""
-        return Post.objects.exclude(user=self.request.user)
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -40,12 +37,14 @@ class CreatePost(LoginRequiredMixin, CreateView):
     """投稿フォーム"""
     model = Post
     template_name = 'create.html'
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
     success_url = reverse_lazy('mypost')
 
     def form_valid(self, form):
         """投稿ユーザーをリクエストユーザーと紐付け"""
         form.instance.user = self.request.user
+
+        # フォームの保存前にログに出力
         return super().form_valid(form)
 
 
